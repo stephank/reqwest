@@ -325,7 +325,7 @@ where {
     #[cfg(feature = "__rustls")]
     pub(crate) fn new_rustls_tls<T>(
         mut http: HttpConnector,
-        tls: rustls::ClientConfig,
+        tls: Arc<rustls::ClientConfig>,
         proxies: Arc<Vec<ProxyMatcher>>,
         user_agent: Option<HeaderValue>,
         local_addr: T,
@@ -368,12 +368,11 @@ where {
         http.enforce_http(false);
 
         let (tls, tls_proxy) = if proxies.is_empty() {
-            let tls = Arc::new(tls);
             (tls.clone(), tls)
         } else {
-            let mut tls_proxy = tls.clone();
+            let mut tls_proxy = (*tls).clone();
             tls_proxy.alpn_protocols.clear();
-            (Arc::new(tls), Arc::new(tls_proxy))
+            (tls, Arc::new(tls_proxy))
         };
 
         ConnectorBuilder {
