@@ -603,9 +603,10 @@ impl Default for TlsBackend {
     }
 }
 
+/// Rustls server certificate verifier that accepts everything without verification.
 #[cfg(feature = "__rustls")]
 #[derive(Debug)]
-pub(crate) struct NoVerifier;
+pub struct NoVerifier;
 
 #[cfg(feature = "__rustls")]
 impl ServerCertVerifier for NoVerifier {
