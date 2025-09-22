@@ -2617,6 +2617,15 @@ impl Client {
             }
         }
     }
+
+    /// Clears all idle connections.
+    pub fn clear_idle_connections(&self) {
+        #[cfg(not(feature = "cookies"))]
+        let svc = self.inner.hyper.get_ref().get_ref();
+        #[cfg(feature = "cookies")]
+        let svc = self.inner.hyper.get_ref().get_ref().get_ref();
+        svc.hyper.clear_idle_connections();
+    }
 }
 
 impl fmt::Debug for Client {

@@ -223,6 +223,11 @@ pub(crate) mod service {
                 cookie_store,
             }
         }
+
+        /// Gets a reference to the underlying service.
+        pub fn get_ref(&self) -> &S {
+            &self.inner
+        }
     }
 
     impl<ReqBody, ResBody, S> Service<Request<ReqBody>> for CookieService<S>
