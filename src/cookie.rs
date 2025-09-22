@@ -161,6 +161,11 @@ impl Jar {
             .into_iter();
         self.0.write().unwrap().store_response_cookies(cookies, url);
     }
+
+    /// Deletes all cookies.
+    pub fn clear(&self) {
+        self.0.write().unwrap().clear()
+    }
 }
 
 impl CookieStore for Jar {
